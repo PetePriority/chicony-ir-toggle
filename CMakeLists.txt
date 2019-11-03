@@ -8,7 +8,8 @@ configure_file(
 
 add_executable(${PROJECT_NAME} main.c)
 
-install(TARGETS ${PROJECT_NAME})
+install(TARGETS ${PROJECT_NAME}
+	RUNTIME DESTINATION bin)
 
 install(FILES ${PROJECT_BINARY_DIR}/system/99-ir-led.rules
 		DESTINATION /lib/udev/rules.d/)
