@@ -29,6 +29,14 @@
         create: yes
         line: ATTRS{idVendor}=="04f2", ATTRS{idProduct}=="b67c", ACTION=="add", /usr/local/bin/chicony-ir-toggle on"
 
+    - name: Enable post-sleep
+      copy:
+        src: ./pre-suspend.sh
+        dest: /usr/lib/systemd/system-sleep/pre-suspend.sh
+        mode: 0755
+        owner: root
+        group: root
+
     - name: Cleanup
       file:
         name: /tmp/cit
