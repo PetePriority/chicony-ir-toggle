@@ -27,7 +27,7 @@
       lineinfile:
         path: /etc/udev/rules.d/99-ir-led.rules
         create: yes
-        line: ATTRS{idVendor}=="04f2", ATTRS{idProduct}=="b67c", ACTION=="add", /usr/local/bin/chicony-ir-toggle on"
+        line: ATTRS{idVendor}=="04f2", ATTRS{idProduct}=="b67c", ACTION=="add", RUN+="/usr/local/bin/chicony-ir-toggle on"
 
     - name: Enable post-sleep
       copy:
