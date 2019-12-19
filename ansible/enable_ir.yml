@@ -1,0 +1,35 @@
+---
+- name: Enbale ir camera
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Download source code
+      git:
+        repo: https://github.com/PetePriority/chicony-ir-toggle.git
+        dest: /tmp/cit
+        clone: yes
+
+    - name: compile executable
+      shell:
+        chdir: /tmp/cit
+        cmd: gcc main.c -o chicony-ir-toggle
+
+    - name: Install executable
+      copy:
+        remote_src: True
+        src: /tmp/cit/chicony-ir-toggle
+        dest: /usr/local/bin/chicony-ir-toggle
+        mode: 0755
+        owner: root
+        group: root
+
+    - name: Setup udev rule
+      lineinfile:
+        path: /etc/udev/rules.d/99-ir-led.rules
+        create: yes
+        line: ATTRS{idVendor}=="04f2", ATTRS{idProduct}=="b67c", ACTION=="add", /usr/local/bin/chicony-ir-toggle on"
+
+    - name: Cleanup
+      file:
+        name: /tmp/cit
+        state: absent
