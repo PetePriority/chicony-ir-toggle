@@ -20,8 +20,9 @@ gcc main.c -o chicony-ir-toggle
 ## Usage
 
 ```
-chicony-ir-toggle <on|off>
+chicony-ir-toggle [-d DEVICE] <on|off>
 ```
+Default for DEVICE is `/dev/video2`. If this differs on your system, supply the `-d` command line parameter pointing to your video device.
 
 ## Confirmed devices 
 Multiple newer lenovo laptops with windows hello e.g.
