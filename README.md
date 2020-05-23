@@ -27,3 +27,5 @@ chicony-ir-toggle <on|off>
 Multiple newer lenovo laptops with windows hello e.g.
 * Thinkpad T490s
 * Yoga S740
+* Thinkpad X1 Yoga (4th generation)
+* XinPro (for alternative frame mode, see https://github.com/hillyu/chicony-ir-toggle.git)
