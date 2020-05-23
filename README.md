@@ -1,5 +1,5 @@
 # chicony-ir-toggle
-This project aims to control the IR emitters of windows hello enabled IR cameras under Linux
+This project aims to control the IR emitters of windows hello enabled IR cameras under Linux. See https://github.com/boltgolt/howdy/issues/269 for a discussion and background about the methods used.
 
 ## Installation
 
