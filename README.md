@@ -17,6 +17,12 @@ Using gcc
 gcc main.c -o chicony-ir-toggle
 ```
 
+Automatic install with ansible playbook on Fedora 31 on Lenovo X1 Gen 2
+```
+cd ./ansible
+ansible-playbook enable_ir.yml
+```
+
 ## Usage
 
 ```
@@ -28,5 +34,7 @@ Default for DEVICE is `/dev/video2`. If this differs on your system, supply the 
 Multiple newer lenovo laptops with windows hello e.g.
 * Thinkpad T490s
 * Yoga S740
+* Thinkpad X1 Extreme Gen 2
 * Thinkpad X1 Yoga (4th generation)
 * XinPro (for alternative frame mode, see https://github.com/hillyu/chicony-ir-toggle.git)
+
