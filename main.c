@@ -13,16 +13,31 @@
 
 #include <sys/ioctl.h>
 
-static void parse_result(int result) {
-}
+const char* usage = "Usage: %s [-d DEVICE] <on|off>\n";
 
 int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        printf("Usage: %s <on|off>\n", argv[0]);
-        return -1;
+    const char * device = "/dev/video2";    
+    int opt;
+    while ((opt = getopt(argc, argv, "d:")) != -1) {
+        switch(opt) {
+            case 'd':
+                device = optarg;
+            break;
+            case '?':
+                fprintf(stderr, usage, argv[0]);
+                exit(-1);        
+            return -1;
+        }
     }
+
+    if (optind + 1 > argc) {
+        /* need at least one argument */
+        fprintf(stderr, usage, argv[0]);
+        exit(-1);        
+	} 
+
     __u8 setbuffer[256] = {};
-    if (strcmp(argv[1], "on") == 0) {
+    if (strcmp(argv[optind], "on") == 0) {
         setbuffer[0] = 0x02;
         setbuffer[1] = 0x19;
     }
@@ -36,7 +51,7 @@ int main(int argc, char *argv[]) {
     };
 
     int result = 0;
-    int fd = open("/dev/video2", O_WRONLY);
+    int fd = open(device, O_WRONLY);
 
     result = ioctl(fd, UVCIOC_CTRL_QUERY, &set_query);
     if (result < 0) {
