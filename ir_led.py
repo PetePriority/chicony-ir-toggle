@@ -1,10 +1,14 @@
 import os
-import struct
-from fcntl import ioctl
 import ctypes
 
 UVCIOC_CTRL_QUERY = 0xC0107521
 UVC_SET_CUR = 0x01
+UNIT = 0x0e
+SELECTOR = 0x0e
+QUERY = UVC_SET_CUR
+SIZE = 2
+LIBC = ctypes.CDLL('libc.so.6')
+
 
 class uvc_ctrl_query(ctypes.Structure):
     _fields_ = [
@@ -15,19 +19,24 @@ class uvc_ctrl_query(ctypes.Structure):
         ("data", ctypes.POINTER(ctypes.c_uint8)),
     ]
 
-with open("/dev/video2", "w") as device:
-    unit = 0x0e
-    selector = 0x0e
-    query = UVC_SET_CUR
-    size = 2
-    value = bytearray([0x00, 0x00])
 
-    u8_array = ctypes.c_uint8 * len(value)
+u8_array = ctypes.c_uint8 * SIZE
+data_maker = lambda v: uvc_ctrl_query(UNIT, SELECTOR, QUERY, SIZE, u8_array.from_buffer(v))
 
-    data = uvc_ctrl_query(unit, selector, query, size, u8_array.from_buffer(value))
 
-    libc = ctypes.CDLL('libc.so.6')
-
-    fd = os.open("/dev/video2", os.O_WRONLY)
-    libc.ioctl(fd, UVCIOC_CTRL_QUERY, ctypes.byref(data))
+def _set_ir_emitted(device_path: str, data: bytearray):
+    fd = os.open(device_path, os.O_WRONLY)
+    LIBC.ioctl(fd, UVCIOC_CTRL_QUERY, ctypes.byref(data_maker(data)))
     os.close(fd)
+
+
+def ir_emitted_on(device_path: str):
+    _set_ir_emitted(device_path, bytearray([0x02, 0x19]))
+
+
+def ir_emitted_off(device_path: str):
+    _set_ir_emitted(device_path, bytearray([0x00, 0x00]))
+
+
+if __name__ == '__main__':
+    ir_emitted_on("/dev/video2")
